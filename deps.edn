@@ -1,0 +1,31 @@
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.12.1"}
+        com.taoensso/timbre {:mvn/version "6.8.0"}
+
+        ;; hive-dsl — Result monad, rescue/guard DSL, bounded-atom, ADTs
+        io.github.hive-agi/hive-dsl
+        {:git/tag "v0.3.9" :git/sha "494af2c0ef889380649e1578942ffdfc205f446d"}
+
+        ;; hive-events — event bus for :tt/* events
+        io.github.hive-agi/hive-events
+        {:git/tag "v0.5.1" :git/sha "ac48b40"}
+
+        ;; hive-weave — named pools, timed execution, parallel primitives
+        ;; (Wave 3+ dependency, kept here to pin Wave-1 skeleton deps)
+        io.github.hive-agi/hive-weave
+        {:git/tag "v0.4.0" :git/sha "0000000"}}
+
+ :aliases
+ {:dev  {:extra-paths ["dev" "test"]
+         :extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}
+                      org.clojure/test.check {:mvn/version "1.1.1"}
+                      nrepl/nrepl {:mvn/version "1.6.0"}
+                      io.github.hive-agi/hive-test
+                      {:git/tag "v0.1.6" :git/sha "a53e9f8"}}}
+
+  :test {:extra-paths ["test"]
+         :extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}
+                      org.clojure/test.check {:mvn/version "1.1.1"}
+                      io.github.hive-agi/hive-test
+                      {:git/tag "v0.1.6" :git/sha "a53e9f8"}}
+         :main-opts ["-m" "kaocha.runner"]}}}
