@@ -1,8 +1,11 @@
 (ns hive-ttracking.events
-  "BC-5 Events — pure event builders for the :tt/* namespace.
+  "BC-5 Events — pure event builders for the :tt/* namespace + defensive
+   publish wrapper over hive.events/dispatch.
 
-   Wave-1 skeleton: event constructors. Wave-3 wires them through
-   hive.events.router. See PLAN.md §2 BC-5.")
+   Wave-2: builders + publish. Full router wiring stays in consumers'
+   init. See PLAN.md §2 BC-5."
+  (:require [hive.events :as ev]
+            [taoensso.timbre :as log]))
 
 ;; ---------------------------------------------------------------------------
 ;; Pure builders — no side effects. Consumers pipe these into hive-events.
@@ -34,11 +37,32 @@
    :result     bench-result
    :at         (System/currentTimeMillis)})
 
+(defn bench-run
+  [bench-result]
+  {:event/type :tt/bench-run
+   :result     bench-result
+   :at         (System/currentTimeMillis)})
+
 ;; ---------------------------------------------------------------------------
-;; Router hookup — Wave-3.
+;; Defensive publish — forwards to hive.events/dispatch.
+;;
+;; Tracking must never corrupt caller control flow. If the router is not
+;; init'd or a handler throws, publish swallows + logs at :debug.
 ;; ---------------------------------------------------------------------------
 
+(defn publish
+  "Dispatch a tt event via hive.events/dispatch. Event must be a map with
+   :event/type. Returns the event (for pipelines). Swallows all throwables
+   so tracking never breaks the traced code."
+  [event]
+  (try
+    (ev/dispatch [(:event/type event) event])
+    (catch Throwable t
+      (log/debug t "tt/publish swallowed" (:event/type event))
+      nil))
+  event)
+
 (defn emit!
-  "Wave-3 dispatches via hive.events.router. Wave-1 stub is a no-op."
-  [_event]
-  :tt/skeleton)
+  "Deprecated alias for `publish`. Retained for Wave-1 call sites."
+  [event]
+  (publish event))
