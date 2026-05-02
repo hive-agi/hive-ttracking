@@ -4,6 +4,6 @@
 
 (defn init-as-addon!
   "Wave-3+ wires default tracker + sink + event router into DI container.
-   Wave-1 stub."
-  [_config]
+   Wave-1 stub. Zero-arity per loader contract (extensions/loader.clj:78)."
+  []
   {:ok true :addon :hive.ttracking :wave 1 :note "skeleton"})
