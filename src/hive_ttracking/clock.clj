@@ -36,13 +36,22 @@
      ~@body))
 
 (defmacro with-fixed
-  "Run body with `*clock*` pinned at the given instant in `zone`
-   (default: system default zone)."
-  ([instant & body]
-   `(with-fixed ~instant (ZoneId/systemDefault) ~@body))
-  ([instant zone & body]
-   `(binding [*clock* (Clock/fixed ~instant ~zone)]
-      ~@body)))
+  "Run body with `*clock*` pinned at `instant` in the system default zone.
+   For an explicit zone, use `with-fixed-in-zone`.
+
+   Why split: Clojure forbids two variadic overloads on a single fn/macro
+   (the original two-arity defmacro fails to compile with
+   'Can't have more than 1 variadic overload'). Splitting into two
+   macros gives both call sites a usable surface."
+  [instant & body]
+  `(binding [*clock* (Clock/fixed ~instant (ZoneId/systemDefault))]
+     ~@body))
+
+(defmacro with-fixed-in-zone
+  "Run body with `*clock*` pinned at `instant` in the given `zone`."
+  [instant zone & body]
+  `(binding [*clock* (Clock/fixed ~instant ~zone)]
+     ~@body))
 
 ;; =============================================================================
 ;; Now
