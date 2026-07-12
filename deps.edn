@@ -3,17 +3,16 @@
         com.taoensso/timbre {:mvn/version "6.8.0"}
 
         ;; hive-dsl — Result monad, rescue/guard DSL, bounded-atom, ADTs
-        io.github.hive-agi/hive-dsl
-        {:git/tag "v0.5.2" :git/sha "8d9760c2f0cf210555db8b3d9fc47ce1af46d3f4"}
+        io.github.hive-agi/hive-dsl {:mvn/version "0.5.2"}
 
         ;; hive-events — event bus for :tt/* events
+        ;; TODO: flip to {:mvn/version "0.5.2"} once hive-events lands on Clojars.
         io.github.hive-agi/hive-events
-        {:git/tag "v0.5.2" :git/sha "24a58a1"}
+        {:mvn/version "0.5.2"}
 
         ;; hive-weave — named pools, timed execution, parallel primitives
         ;; (Wave 3+ dependency, kept here to pin Wave-1 skeleton deps)
-        io.github.hive-agi/hive-weave
-        {:git/tag "v0.2.5" :git/sha "5895a2a"}}
+        io.github.hive-agi/hive-weave {:mvn/version "0.2.5"}}
 
  :aliases
  {:dev  {:extra-paths ["dev" "test"]
@@ -28,4 +27,8 @@
                       org.clojure/test.check {:mvn/version "1.1.1"}
                       io.github.hive-agi/hive-test
                       {:git/tag "v0.3.0" :git/sha "763e4bc"}}
-         :main-opts ["-m" "kaocha.runner"]}}}
+         :main-opts ["-m" "kaocha.runner"]}
+
+  :build {:deps {io.github.clojure/tools.build {:mvn/version "0.10.9"}
+                 slipset/deps-deploy {:mvn/version "0.2.2"}}
+          :ns-default build}}}
