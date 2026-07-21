@@ -2,6 +2,6 @@
  :addon/kind         :library
  :addon/type         :native
  :addon/init-ns      "hive-ttracking.init"
- :addon/init-fn      "init-as-addon!"
+ :addon/init-fn      "addon-ctor"
  :addon/capabilities #{:tracking :budget-enforcement :span-sink :bench :protocol-instrumentation}
  :addon/description  "Time-tracking, budgets, spans, bench and protocol instrumentation (Wave-1 skeleton — see PLAN.md)"}
