@@ -3,21 +3,21 @@
         com.taoensso/timbre {:mvn/version "6.8.0"}
 
         ;; hive-dsl — Result monad, rescue/guard DSL, bounded-atom, ADTs
-        io.github.hive-agi/hive-dsl {:mvn/version "0.5.4"}
+        io.github.hive-agi/hive-dsl {:mvn/version "0.5.5"}
 
         ;; hive-events — event bus for :tt/* events
         ;; TODO: flip to {:mvn/version "0.5.2"} once hive-events lands on Clojars.
         io.github.hive-agi/hive-events
-        {:mvn/version "0.5.2"}
+        {:mvn/version "0.5.4"}
 
         ;; hive-weave — named pools, timed execution, parallel primitives
         ;; (Wave 3+ dependency, kept here to pin Wave-1 skeleton deps)
-        io.github.hive-agi/hive-weave {:mvn/version "0.2.5"}
+        io.github.hive-agi/hive-weave {:mvn/version "0.2.7"}
 
         ;; hive-addon — standalone IAddon contract leaf (hive-addon.protocol/IAddon).
         ;; Compile dep for the mounter-ready addon-ctor; the live hive-mcp tree
         ;; overrides to the local 0.3.1 sibling (mount.compose) at runtime.
-        io.github.hive-agi/hive-addon {:mvn/version "0.3.1"}}
+        io.github.hive-agi/hive-addon {:mvn/version "0.3.3"}}
 
  :aliases
  {:dev  {:extra-paths ["dev" "test"]
