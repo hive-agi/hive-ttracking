@@ -3,7 +3,7 @@
         com.taoensso/timbre {:mvn/version "6.8.0"}
 
         ;; hive-dsl — Result monad, rescue/guard DSL, bounded-atom, ADTs
-        io.github.hive-agi/hive-dsl {:mvn/version "0.5.14"}
+        io.github.hive-agi/hive-dsl {:mvn/version "0.5.15"}
 
         ;; hive-events — event bus for :tt/* events
         ;; TODO: flip to {:mvn/version "0.5.2"} once hive-events lands on Clojars.
@@ -34,5 +34,5 @@
                       {:mvn/version "0.3.12"}}
          :main-opts ["-m" "kaocha.runner"]}
 
-  :build {:deps {io.github.hive-agi/hive-build {:mvn/version "0.1.8"}}
+  :build {:deps {io.github.hive-agi/hive-build {:mvn/version "0.1.9"}}
           :ns-default hive-build.api}}}
