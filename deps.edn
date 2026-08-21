@@ -3,16 +3,16 @@
         com.taoensso/timbre {:mvn/version "6.8.0"}
 
         ;; hive-dsl — Result monad, rescue/guard DSL, bounded-atom, ADTs
-        io.github.hive-agi/hive-dsl {:mvn/version "0.5.15"}
+        io.github.hive-agi/hive-dsl {:mvn/version "0.5.16"}
 
         ;; hive-events — event bus for :tt/* events
         ;; TODO: flip to {:mvn/version "0.5.2"} once hive-events lands on Clojars.
         io.github.hive-agi/hive-events
-        {:mvn/version "0.5.6"}
+        {:mvn/version "0.5.7"}
 
         ;; hive-weave — named pools, timed execution, parallel primitives
         ;; (Wave 3+ dependency, kept here to pin Wave-1 skeleton deps)
-        io.github.hive-agi/hive-weave {:mvn/version "0.3.1"}
+        io.github.hive-agi/hive-weave {:mvn/version "0.3.2"}
 
         ;; hive-addon — standalone IAddon contract leaf (hive-addon.protocol/IAddon).
         ;; Compile dep for the mounter-ready addon-ctor; the live hive-mcp tree
@@ -25,14 +25,14 @@
                       org.clojure/test.check {:mvn/version "1.1.3"}
                       nrepl/nrepl {:mvn/version "1.7.0"}
                       io.github.hive-agi/hive-test
-                      {:mvn/version "0.3.12"}}}
+                      {:mvn/version "0.3.14"}}}
 
   :test {:extra-paths ["test"]
          :extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}
                       org.clojure/test.check {:mvn/version "1.1.3"}
                       io.github.hive-agi/hive-test
-                      {:mvn/version "0.3.12"}}
+                      {:mvn/version "0.3.14"}}
          :main-opts ["-m" "kaocha.runner"]}
 
-  :build {:deps {io.github.hive-agi/hive-build {:mvn/version "0.1.9"}}
+  :build {:deps {io.github.hive-agi/hive-build {:mvn/version "0.1.10"}}
           :ns-default hive-build.api}}}
