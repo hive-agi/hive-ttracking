@@ -1,0 +1,6 @@
+{:project-id "hive-ttracking"
+ :parent "hive"
+ :description "Time and token tracking substrate — clock, spans, budgets, instrumentation and benchmarks, emitting tracking events. Wired under hive-mcp, hive-knowledge, hive-milvus and hive-ingestor."
+ :language :clojure
+ :tags ["tracking" "telemetry" "budget" "span" "bench"]
+ :carto {:source-roots ["resources" "src" "test"]}}
