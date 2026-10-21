@@ -111,6 +111,26 @@
     (events/publish (events/bench-run result))
     result))
 
+(defn record-overhead-ns
+  "Micro-bench of hive-ttracking.metrics/record! against a fresh stats-sink:
+   `warmup` untimed calls, then `n` timed calls on one op key. Restores the
+   previously installed sink. Returns {:per-call-ns double :n n}."
+  ([] (record-overhead-ns {}))
+  ([{:keys [n warmup] :or {n 2000000 warmup 2000000}}]
+   (let [install! @(requiring-resolve 'hive-ttracking.metrics/install!)
+         record!  @(requiring-resolve 'hive-ttracking.metrics/record!)
+         current  @(requiring-resolve 'hive-ttracking.metrics/current-sink)
+         stats    @(requiring-resolve 'hive-ttracking.metrics/stats-sink)
+         prev     (current)
+         k        [:mcp/tool "memory" "search"]]
+     (install! (stats))
+     (try
+       (dotimes [_ warmup] (record! k 1234 :ok))
+       (let [t0 (System/nanoTime)]
+         (dotimes [_ n] (record! k 1234 :ok))
+         {:per-call-ns (/ (double (- (System/nanoTime) t0)) n) :n n})
+       (finally (install! prev))))))
+
 ;; ---------------------------------------------------------------------------
 ;; defbench — deftest-like wrapper that runs a bench and asserts p95.
 ;;
