@@ -5,8 +5,7 @@
         ;; hive-dsl — Result monad, rescue/guard DSL, bounded-atom, ADTs
         io.github.hive-agi/hive-dsl {:mvn/version "0.5.37"}
 
-        ;; hive-events — event bus for :tt/* events
-        ;; TODO: flip to {:mvn/version "0.5.2"} once hive-events lands on Clojars.
+        ;; hive-events: event bus for :tt/* events (Clojars)
         io.github.hive-agi/hive-events
         {:mvn/version "0.5.19"}
 
