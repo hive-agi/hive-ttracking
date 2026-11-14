@@ -1,7 +1,8 @@
 (ns hive-ttracking.init
   "IAddon init hook — invoked by hive-di when hive-ttracking is on the
    classpath and config enables it. Wave-1 skeleton: no-op."
-  (:require [hive-addon.protocol]))
+  (:require [hive-addon.protocol]
+            [hive-dsl.result :as r]))
 
 (defn init-as-addon!
   "Wave-3+ wires default tracker + sink + event router into DI container.
@@ -15,8 +16,7 @@
    shutdown! releases nothing. Returns nil when the IAddon protocol is off the
    classpath."
   []
-  (when (try (requiring-resolve 'hive-addon.protocol/IAddon)
-             (catch Throwable _ nil))
+  (when (r/rescue nil (requiring-resolve 'hive-addon.protocol/IAddon))
     (reify hive-addon.protocol/IAddon
       (addon-id [_] "hive.ttracking")
       (addon-type [_] :native)
