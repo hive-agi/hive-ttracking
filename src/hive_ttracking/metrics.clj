@@ -8,6 +8,7 @@
    Callers bind this namespace late (requiring-resolve) and fall back to a
    no-op when it is absent. `record!` and `timed` never throw because of the
    sink: a sink failure is swallowed and counted in `sink-error-count`."
+  (:require [hive-dsl.result :as r])
   (:import [java.util.concurrent ConcurrentHashMap]
            [java.util.concurrent.atomic AtomicLongArray LongAccumulator LongAdder]
            [java.util.function LongBinaryOperator]))
@@ -154,7 +155,7 @@
         nil)
       (snapshot [_]
         (reduce (fn [m s]
-                  (merge m (try (snapshot s) (catch Throwable _ nil))))
+                  (merge m (r/rescue nil (snapshot s))))
                 {} sinks))
       IResettable
       (-reset! [_]
