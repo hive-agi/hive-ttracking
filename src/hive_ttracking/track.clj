@@ -25,15 +25,20 @@
 (defrecord Span [id parent-id name t0 t1 tags result samples])
 
 (defn make-span
-  [{:keys [id parent-id name tags]}]
-  (->Span (or id (random-uuid))
-          parent-id
-          name
-          (System/nanoTime)
-          nil
-          (or tags {})
-          nil
-          []))
+  "Open Span value. Options: :id :parent-id :name :tags, and :trace-context,
+   a W3C context (hive-ttracking.tracecontext) received from a remote hop:
+   when valid the span becomes its child (span/with-trace-parent), so its
+   :parent-id is the caller's wire span id and the trace-id rides in :tags."
+  [{:keys [id parent-id name tags trace-context]}]
+  (cond-> (->Span (or id (random-uuid))
+                  parent-id
+                  name
+                  (System/nanoTime)
+                  nil
+                  (or tags {})
+                  nil
+                  [])
+    trace-context (span/with-trace-parent trace-context)))
 
 ;; ---------------------------------------------------------------------------
 ;; AtomTracker — Wave-2 production implementation.
