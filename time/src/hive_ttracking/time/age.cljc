@@ -30,19 +30,23 @@
   (contains? #{:leap/feb-28 :leap/mar-01} p))
 
 (defn- anniversary
-  "The (month, day) the birthday is observed on. :leap/mar-01 keeps the birth's
-   own pair -- the plain lexicographic rule of CC art. 132 paragraph 3, where a
-   29 February birth completes on 1 March in a common year and on 29 February in
-   a leap year. :leap/feb-28 observes a 29 February birth on 28 February
-   instead."
-  [birth policy]
+  "The (month, day) the birthday is observed on IN `year`. In a LEAP year 29
+   February exists, so a 29 February birth completes on 29 February under BOTH
+   policies; the policies differ ONLY in a common year, where :leap/feb-28
+   observes it on 28 February and :leap/mar-01 on 1 March. A birth on any other
+   day keeps its own pair."
+  [birth policy year]
   (if (and (= 2 (long (:month birth))) (= 29 (long (:day birth)))
-           (= :leap/feb-28 policy))
-    [2 28]
+           (not (day/leap-year? year)))
+    (if (= :leap/feb-28 policy) [2 28] [3 1])
     [(long (:month birth)) (long (:day birth))]))
 
 (defn completed-years
   "Completed years of birth as of day, under leap-policy (from the closed set).
+
+   In a LEAP year 29 February exists, so a 29 February birth completes on
+   29 February under BOTH policies; the policies differ ONLY in a common year,
+   where :leap/feb-28 completes on 28 February and :leap/mar-01 on 1 March.
 
    day before birth -> :time/age-before-birth; a policy outside the set ->
    :time/leap-policy-unknown; a nil policy -> :time/leap-policy-missing."
@@ -58,7 +62,7 @@
     (error/refuse :time/age-before-birth "day before birth"
                   {:birth birth :day day}))
   (let [y (- (long (:year day)) (long (:year birth)))
-        [bm bd] (anniversary birth leap-policy)]
+        [bm bd] (anniversary birth leap-policy (long (:year day)))]
     (if (neg? (compare [(long (:month day)) (long (:day day))] [bm bd]))
       (dec y)
       y)))

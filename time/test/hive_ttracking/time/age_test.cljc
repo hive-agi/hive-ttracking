@@ -43,6 +43,20 @@
   (testing "the day before completion"
     (is (= 24 (age/completed-years (d 2000 2 29) (d 2025 2 27) :leap/mar-01)))))
 
+(deftest leap-year-birth-completes-on-the-29th-under-both-policies
+  (testing "birth 2000-02-29 read in a LEAP year: the 29th exists, so BOTH policies wait for it"
+    (is (= 23 (age/completed-years (d 2000 2 29) (d 2024 2 28) :leap/feb-28))
+        "2024-02-28: the birthday is the 29th, so the year is not complete")
+    (is (= 23 (age/completed-years (d 2000 2 29) (d 2024 2 28) :leap/mar-01))
+        "2024-02-28: same under :leap/mar-01 -- the policies agree in a leap year")
+    (is (= 24 (age/completed-years (d 2000 2 29) (d 2024 2 29) :leap/feb-28)))
+    (is (= 24 (age/completed-years (d 2000 2 29) (d 2024 2 29) :leap/mar-01))))
+  (testing "birth 2000-02-29 read in a COMMON year: the policies differ"
+    (is (= 25 (age/completed-years (d 2000 2 29) (d 2025 2 28) :leap/feb-28)))
+    (is (= 24 (age/completed-years (d 2000 2 29) (d 2025 2 28) :leap/mar-01)))
+    (is (= 25 (age/completed-years (d 2000 2 29) (d 2025 3 1) :leap/feb-28)))
+    (is (= 25 (age/completed-years (d 2000 2 29) (d 2025 3 1) :leap/mar-01)))))
+
 (deftest mirrors-the-oracle-golden-rows-under-mar-01
   (testing "calendario binds :leap/mar-01 (CC art. 132 paragraph 3); these are the 7 golden rows"
     (is (= 24 (age/completed-years (d 2000 2 29) (d 2025 2 28) :leap/mar-01)))
