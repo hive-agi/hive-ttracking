@@ -1,0 +1,367 @@
+[{:id :day/iso-accepted
+  :op :parse-day
+  :in ["2026-11-25"]
+  :expect {:year 2026 :month 11 :day 25}}
+ {:id :day/iso-padded-accepted
+  :op :parse-day
+  :in ["2026-01-05"]
+  :expect {:year 2026 :month 1 :day 5}}
+ {:id :day/format
+  :op :format-day
+  :in [{:year 2026 :month 11 :day 25}]
+  :expect "2026-11-25"}
+ {:id :day/format-pads
+  :op :format-day
+  :in [{:year 2026 :month 1 :day 5}]
+  :expect "2026-01-05"}
+ {:id :day/zero-go-refused
+  :op :parse-day
+  :in ["0001-01-01"]
+  :expect {:refused :time/day-out-of-range}}
+ {:id :day/range-min-accepted
+  :op :parse-day
+  :in ["1900-01-01"]
+  :expect {:year 1900 :month 1 :day 1}}
+ {:id :day/range-max-accepted
+  :op :parse-day
+  :in ["2199-12-31"]
+  :expect {:year 2199 :month 12 :day 31}}
+ {:id :day/range-1899-refused
+  :op :parse-day
+  :in ["1899-12-31"]
+  :expect {:refused :time/day-out-of-range}}
+ {:id :day/range-2200-refused
+  :op :parse-day
+  :in ["2200-01-01"]
+  :expect {:refused :time/day-out-of-range}}
+ {:id :day/leap-2024-02-29-accepted
+  :op :parse-day
+  :in ["2024-02-29"]
+  :expect {:year 2024 :month 2 :day 29}}
+ {:id :day/leap-2000-02-29-accepted
+  :op :parse-day
+  :in ["2000-02-29"]
+  :expect {:year 2000 :month 2 :day 29}}
+ {:id :day/non-leap-2023-02-29-refused
+  :op :parse-day
+  :in ["2023-02-29"]
+  :expect {:refused :time/day-impossible}}
+ {:id :day/non-leap-1900-02-29-refused
+  :op :parse-day
+  :in ["1900-02-29"]
+  :expect {:refused :time/day-impossible}}
+ {:id :day/impossible-2026-02-31
+  :op :parse-day
+  :in ["2026-02-31"]
+  :expect {:refused :time/day-impossible}}
+ {:id :day/instant-not-a-day-refused
+  :op :parse-day
+  :in ["2026-11-25T03:00:00Z"]
+  :expect {:refused :time/day-is-instant}}
+ {:id :day/text-not-a-day-refused
+  :op :parse-day
+  :in ["25/11/2026"]
+  :expect {:refused :time/day-format}}
+ {:id :day/non-padded-refused
+  :op :parse-day
+  :in ["2026-1-1"]
+  :expect {:refused :time/day-format}}
+ {:id :day/not-text-refused
+  :op :parse-day
+  :in [20261125]
+  :expect {:refused :time/day-format}}
+ {:id :day/days-between-piso
+  :op :days-between
+  :in [{:year 2026 :month 10 :day 9} {:year 2026 :month 10 :day 10}]
+  :expect 1}
+ {:id :day/days-between-negative
+  :op :days-between
+  :in [{:year 2026 :month 10 :day 10} {:year 2026 :month 10 :day 9}]
+  :expect -1}
+ {:id :day/days-between-across-dst
+  :op :days-between
+  :in [{:year 2018 :month 11 :day 3} {:year 2018 :month 11 :day 5}]
+  :expect 2}
+ {:id :day/days-between-across-dst-end
+  :op :days-between
+  :in [{:year 2019 :month 2 :day 16} {:year 2019 :month 2 :day 18}]
+  :expect 2}
+ {:id :day/add-days
+  :op :add-days
+  :in [{:year 2019 :month 2 :day 16} 1]
+  :expect {:year 2019 :month 2 :day 17}}
+ {:id :day/add-days-across-dst
+  :op :add-days
+  :in [{:year 2018 :month 11 :day 3} 1]
+  :expect {:year 2018 :month 11 :day 4}}
+ {:id :day/add-days-year-rollover
+  :op :add-days
+  :in [{:year 2026 :month 12 :day 31} 1]
+  :expect {:year 2027 :month 1 :day 1}}
+ {:id :day/add-days-out-of-range-refused
+  :op :add-days
+  :in [{:year 2199 :month 12 :day 31} 1]
+  :expect {:refused :time/day-out-of-range}}
+
+ {:id :month/iso-accepted
+  :op :parse-month
+  :in ["2026-11"]
+  :expect {:year 2026 :month 11}}
+ {:id :month/iso-padded-accepted
+  :op :parse-month
+  :in ["2026-01"]
+  :expect {:year 2026 :month 1}}
+ {:id :month/format
+  :op :format-month
+  :in [{:year 2026 :month 1}]
+  :expect "2026-01"}
+ {:id :month/instant-refused
+  :op :parse-month
+  :in ["2026-11-25T03:00:00Z"]
+  :expect {:refused :time/month-is-instant}}
+ {:id :month/day-string-refused
+  :op :parse-month
+  :in ["2026-11-25"]
+  :expect {:refused :time/month-impossible}}
+ {:id :month/month-13-refused
+  :op :parse-month
+  :in ["2026-13"]
+  :expect {:refused :time/month-impossible}}
+ {:id :month/range-1899-refused
+  :op :parse-month
+  :in ["1899-12"]
+  :expect {:refused :time/month-out-of-range}}
+
+ {:id :time/legacy-h
+  :op :parse-time
+  :in ["8"]
+  :expect {:hour 8 :minute 0 :second 0}}
+ {:id :time/legacy-hm
+  :op :parse-time
+  :in ["8:30"]
+  :expect {:hour 8 :minute 30 :second 0}}
+ {:id :time/legacy-hms
+  :op :parse-time
+  :in ["8:30:15"]
+  :expect {:hour 8 :minute 30 :second 15}}
+ {:id :time/legacy-zero
+  :op :parse-time
+  :in ["0"]
+  :expect {:hour 0 :minute 0 :second 0}}
+ {:id :time/format-hm
+  :op :format-time
+  :in [{:hour 8 :minute 30 :second 0}]
+  :expect "08:30"}
+ {:id :time/format-hms
+  :op :format-time
+  :in [{:hour 8 :minute 30 :second 15}]
+  :expect "08:30:15"}
+ {:id :time/format-midnight
+  :op :format-time
+  :in [{:hour 0 :minute 0 :second 0}]
+  :expect "00:00"}
+ {:id :time/trailing-colon-refused
+  :op :parse-time
+  :in ["8:30:"]
+  :expect {:refused :time/time-format}}
+ {:id :time/text-refused
+  :op :parse-time
+  :in ["quarter past eight"]
+  :expect {:refused :time/time-format}}
+ {:id :time/hour-24-50-refused
+  :op :parse-time
+  :in ["24:50"]
+  :expect {:refused :time/time-out-of-range}}
+ {:id :time/hour-24-00-refused
+  :op :parse-time
+  :in ["24:00"]
+  :expect {:refused :time/time-out-of-range}}
+ {:id :time/minute-60-refused
+  :op :parse-time
+  :in ["8:60"]
+  :expect {:refused :time/time-out-of-range}}
+
+ {:id :period/format
+  :op :format-period
+  :in [{:start {:year 2026 :month 11 :day 25} :end {:year 2026 :month 11 :day 30}}]
+  :expect {:start "2026-11-25" :end "2026-11-30"}}
+ {:id :period/current-month
+  :op :current-month
+  :in [{:year 2026 :month 11 :day 25}]
+  :expect {:start {:year 2026 :month 11 :day 1} :end {:year 2026 :month 11 :day 25}}}
+ {:id :period/previous-month
+  :op :previous-month
+  :in [{:year 2026 :month 11 :day 25}]
+  :expect {:start {:year 2026 :month 10 :day 1} :end {:year 2026 :month 10 :day 31}}}
+ {:id :period/end-exclusive
+  :op :period->instant-interval
+  :in [{:start {:year 2026 :month 11 :day 25} :end {:year 2026 :month 11 :day 25}}
+       "America/Sao_Paulo"]
+  :expect [1795575600000 1795662000000]}
+ {:id :period/contains-start-inclusive
+  :op :period-contains-instant?
+  :in [{:start {:year 2026 :month 11 :day 25} :end {:year 2026 :month 11 :day 25}}
+       "America/Sao_Paulo" 1795575600000]
+  :expect true}
+ {:id :period/contains-end-exclusive
+  :op :period-contains-instant?
+  :in [{:start {:year 2026 :month 11 :day 25} :end {:year 2026 :month 11 :day 25}}
+       "America/Sao_Paulo" 1795662000000]
+  :expect false}
+ {:id :period/contains-last-second
+  :op :period-contains-instant?
+  :in [{:start {:year 2026 :month 11 :day 25} :end {:year 2026 :month 11 :day 25}}
+       "America/Sao_Paulo" 1795661999000]
+  :expect true}
+
+ {:id :zone/sao-paulo-2018-11-04-gap-refused
+  :op :local-time->instant
+  :in [{:year 2018 :month 11 :day 4} {:hour 0 :minute 0 :second 0} "America/Sao_Paulo"]
+  :expect {:refused :time/zone-gap}}
+ {:id :zone/sao-paulo-2018-11-04-gap-0030-refused
+  :op :local-time->instant
+  :in [{:year 2018 :month 11 :day 4} {:hour 0 :minute 30 :second 0} "America/Sao_Paulo"]
+  :expect {:refused :time/zone-gap}}
+ {:id :zone/sao-paulo-2018-11-04-gap-edge-0100
+  :op :local-time->instant
+  :in [{:year 2018 :month 11 :day 4} {:hour 1 :minute 0 :second 0} "America/Sao_Paulo"]
+  :expect 1541300400000}
+ {:id :zone/sao-paulo-2018-11-03-before-gap
+  :op :local-time->instant
+  :in [{:year 2018 :month 11 :day 3} {:hour 23 :minute 30 :second 0} "America/Sao_Paulo"]
+  :expect 1541298600000}
+ {:id :zone/sao-paulo-2018-11-04-day-start
+  :op :day->instant
+  :in [{:year 2018 :month 11 :day 4} "America/Sao_Paulo"]
+  :expect 1541300400000}
+ {:id :zone/sao-paulo-2019-02-17-overlap-earliest
+  :op :local-time->instant
+  :in [{:year 2019 :month 2 :day 16} {:hour 23 :minute 30 :second 0} "America/Sao_Paulo"]
+  :expect 1550367000000}
+ {:id :zone/sao-paulo-2019-02-16-day-start
+  :op :day->instant
+  :in [{:year 2019 :month 2 :day 16} "America/Sao_Paulo"]
+  :expect 1550282400000}
+ {:id :zone/sao-paulo-2019-02-17-day-start
+  :op :day->instant
+  :in [{:year 2019 :month 2 :day 17} "America/Sao_Paulo"]
+  :expect 1550372400000}
+ {:id :zone/period-across-dst-day
+  :op :period->instant-interval
+  :in [{:start {:year 2018 :month 11 :day 3} :end {:year 2018 :month 11 :day 4}}
+       "America/Sao_Paulo"]
+  :expect [1541214000000 1541383200000]}
+ {:id :zone/unknown-zone-refused
+  :op :local-time->instant
+  :in [{:year 2026 :month 11 :day 25} {:hour 12 :minute 0 :second 0} "Marte/Olimpo"]
+  :expect {:refused :time/zone-unknown}}
+ {:id :zone/today-utc
+  :op :today
+  :in [1795649400000 "UTC"]
+  :expect {:year 2026 :month 11 :day 25}}
+ {:id :zone/today-sao-paulo
+  :op :today
+  :in [1795649400000 "America/Sao_Paulo"]
+  :expect {:year 2026 :month 11 :day 25}}
+ {:id :zone/today-tokyo
+  :op :today
+  :in [1795649400000 "Asia/Tokyo"]
+  :expect {:year 2026 :month 11 :day 26}}
+ {:id :zone/today-sao-paulo-before-midnight
+  :op :today
+  :in [1795573800000 "America/Sao_Paulo"]
+  :expect {:year 2026 :month 11 :day 24}}
+
+ {:id :instant/parse-rfc3339
+  :op :parse-instant
+  :in ["2026-11-25T03:00:00Z"]
+  :expect 1795575600000}
+ {:id :instant/parse-offset-normalised
+  :op :parse-instant
+  :in ["2026-11-25T00:00:00-03:00"]
+  :expect 1795575600000}
+ {:id :instant/format
+  :op :format-instant
+  :in [1795575600000]
+  :expect "2026-11-25T03:00:00Z"}
+ {:id :instant/format-millis
+  :op :format-instant
+  :in [1795575600123]
+  :expect "2026-11-25T03:00:00.123Z"}
+ {:id :instant/parse-day-string-refused
+  :op :parse-instant
+  :in ["2026-11-25"]
+  :expect {:refused :time/instant-format}}
+ {:id :instant/instant-to-day-sao-paulo
+  :op :instant->day
+  :in [1795575600000 "America/Sao_Paulo"]
+  :expect {:year 2026 :month 11 :day 25}}
+ {:id :instant/instant-to-day-sao-paulo-previous
+  :op :instant->day
+  :in [1795564800000 "America/Sao_Paulo"]
+  :expect {:year 2026 :month 11 :day 24}}
+
+ {:id :age/leap-birth-read-2024-02-28-feb-28
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2024 :month 2 :day 28} :leap/feb-28]
+  :expect 23}
+ {:id :age/leap-birth-read-2024-02-28-mar-01
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2024 :month 2 :day 28} :leap/mar-01]
+  :expect 23}
+ {:id :age/leap-birth-read-2024-02-29-feb-28
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2024 :month 2 :day 29} :leap/feb-28]
+  :expect 24}
+ {:id :age/leap-birth-read-2024-02-29-mar-01
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2024 :month 2 :day 29} :leap/mar-01]
+  :expect 24}
+ {:id :age/leap-birth-read-2025-02-28-feb-28
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2025 :month 2 :day 28} :leap/feb-28]
+  :expect 25}
+ {:id :age/leap-birth-read-2025-02-28-mar-01
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2025 :month 2 :day 28} :leap/mar-01]
+  :expect 24}
+ {:id :age/leap-birth-read-2025-03-01-feb-28
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2025 :month 3 :day 1} :leap/feb-28]
+  :expect 25}
+ {:id :age/leap-birth-read-2025-03-01-mar-01
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2025 :month 3 :day 1} :leap/mar-01]
+  :expect 25}
+ {:id :age/ordinary-anniversary
+  :op :completed-years
+  :in [{:year 2000 :month 6 :day 15} {:year 2025 :month 6 :day 15} :leap/mar-01]
+  :expect 25}
+ {:id :age/ordinary-day-before-anniversary
+  :op :completed-years
+  :in [{:year 2000 :month 6 :day 15} {:year 2025 :month 6 :day 14} :leap/mar-01]
+  :expect 24}
+ {:id :age/anniversary-01-01
+  :op :completed-years
+  :in [{:year 2001 :month 1 :day 1} {:year 2002 :month 1 :day 1} :leap/mar-01]
+  :expect 1}
+ {:id :age/anniversary-01-03
+  :op :completed-years
+  :in [{:year 2001 :month 3 :day 1} {:year 2004 :month 3 :day 1} :leap/mar-01]
+  :expect 3}
+ {:id :age/leap-birth-before-march-anniversary
+  :op :completed-years
+  :in [{:year 2001 :month 3 :day 1} {:year 2004 :month 2 :day 29} :leap/mar-01]
+  :expect 2}
+ {:id :age/before-birth-refused
+  :op :completed-years
+  :in [{:year 2000 :month 6 :day 15} {:year 1999 :month 6 :day 15} :leap/mar-01]
+  :expect {:refused :time/age-before-birth}}
+ {:id :age/missing-policy-refused
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2025 :month 3 :day 1} nil]
+  :expect {:refused :time/leap-policy-missing}}
+ {:id :age/unknown-policy-refused
+  :op :completed-years
+  :in [{:year 2000 :month 2 :day 29} {:year 2025 :month 3 :day 1} :leap/nope]
+  :expect {:refused :time/leap-policy-unknown}}]
