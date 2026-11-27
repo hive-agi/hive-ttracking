@@ -1,0 +1,12 @@
+{:tasks
+ {test:clj   {:task (shell "clojure -M:test")}
+  cljs:build {:task (shell "npx shadow-cljs compile test")}
+  test:cljs  {:task (do (shell "npx shadow-cljs compile test") (shell "node out/test.js"))}
+  ;; The zone rules on the cljs leg come from the engine's ICU tzdata via
+  ;; Intl.DateTimeFormat, so the DST rows run under three process zones on
+  ;; both legs: a library that reads the process zone fails one of them.
+  test:tz    {:task (doseq [tz ["UTC" "America/Sao_Paulo" "Asia/Tokyo"]]
+                      (println "── TZ=" tz)
+                      (shell {:extra-env {"TZ" tz}} "clojure" (str "-J-Duser.timezone=" tz) "-M:test")
+                      (shell {:extra-env {"TZ" tz}} "node out/test.js"))
+              :depends [cljs:build]}}}

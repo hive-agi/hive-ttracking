@@ -1,0 +1,5 @@
+{:lib      io.github.hive-agi/hive-ttracking-time
+ :license  {:name "MIT" :url "https://opensource.org/licenses/MIT"}
+ :scm-url  "https://github.com/hive-agi/hive-ttracking"
+ :src-dirs ["src"]
+ :publish  :clojars}

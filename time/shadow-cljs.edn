@@ -1,0 +1,4 @@
+{:deps {:aliases [:cljs]}
+ :builds {:test {:target :node-test
+                 :output-to "out/test.js"
+                 :ns-regexp "-test$"}}}
