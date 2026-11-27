@@ -8,9 +8,11 @@
 
    now returns epoch milliseconds, the same unit the instant codec uses.
 
-   today(clock, zone) does NOT live here: a clock read is not calendar
-   arithmetic, and turning an instant into a Day needs the zone mechanics of
-   step-5 (time/zone.cljc). It is therefore in step-5's scope."
+   today(clock, zone) is the ONE place a clock read meets a zone: it reads the
+   clock and turns the instant into the Day in `zone`. It lives here (not in
+   zone.cljc) because it is a clock read first; zone is required only to
+   interpret the instant."
+  (:require [hive-ttracking.time.zone :as zone])
   )
 
 (defprotocol Clock
@@ -28,3 +30,8 @@
    with-redefs."
   [ms]
   (reify Clock (now [_] ms)))
+
+(defn today
+  "The Day of `clock`'s current instant in `zone`.\n\n   The ONE place a clock read meets a zone. Deferred here from step-6: it\n   requires the zone mechanics, and a clock read is not calendar arithmetic, so\n   it belongs with the Clock port, not in zone.cljc.\n\n   ttrack has no default zone: `zone` is required, explicitly. A fixed clock\n   makes it deterministic on both legs (no with-redefs)."
+  [clock zone-id]
+  (zone/instant->day (now clock) zone-id))
