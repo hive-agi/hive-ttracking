@@ -18,7 +18,7 @@
 (def reasons
   "The CLOSED vocabulary of refusal reasons.
 
-   Generic (day, month, period, zone, codecs) plus the two the ISO codec
+   Generic (day, month, period, zone, age, codecs) plus the two the ISO codec
    needs."
   #{:time/day-format
     :time/day-impossible
@@ -34,7 +34,10 @@
     :time/time-format
     :time/time-out-of-range
     :time/instant-format
-    :time/legacy-format})
+    :time/legacy-format
+    :time/age-before-birth
+    :time/leap-policy-missing
+    :time/leap-policy-unknown})
 
 (def Reason
   "The reason set as a malli :enum, for contracts and consumer validation."
